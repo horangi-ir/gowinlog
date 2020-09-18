@@ -2,8 +2,8 @@ package winlog
 
 import (
 	"fmt"
-	"syscall"
 	"time"
+	"unicode/utf16"
 	"unsafe"
 )
 
@@ -60,6 +60,16 @@ func (e EvtVariant) elemAt(index uint32) *evtVariant {
 	return (*evtVariant)(unsafe.Pointer(uintptr(16*index) + uintptr(unsafe.Pointer(&e[0]))))
 }
 
+func UTF16ToString(s []uint16) string {
+	for i, v := range s {
+		if v == 0 {
+			s = s[0:i]
+			break
+		}
+	}
+	return string(utf16.Decode(s))
+}
+
 /* Return the string value of the variable at `index`. If the
    variable isn't a string, an error is returned */
 func (e EvtVariant) String(index uint32) (string, error) {
@@ -68,7 +78,7 @@ func (e EvtVariant) String(index uint32) (string, error) {
 		return "", fmt.Errorf("EvtVariant at index %v was not of type string, type was %v", index, elem.Type)
 	}
 	wideString := (*[1 << 29]uint16)(unsafe.Pointer(uintptr(elem.Data)))
-	str := syscall.UTF16ToString(wideString[0 : elem.Count+1])
+	str := UTF16ToString(wideString[0 : elem.Count+1])
 	return str, nil
 }
 

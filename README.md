@@ -3,12 +3,13 @@ Go library for subscribing to the Windows Event Log.
 
 Godocs
 =======
-[gowinlog v0](https://gopkg.in/alanctgardner/gowinlog.v0)
+
+godoc is not proper, look at the example
 
 Installation
 =======
 
-gowinlog uses cgo, so it needs gcc. Installing [MinGW-w64](http://mingw-w64.yaxm.org/doku.php) should satisfy both requirements. Make sure the Go architecture and GCC architecture are the same.
+just go get the thing
 
 Features
 ========
